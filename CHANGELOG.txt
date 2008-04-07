@@ -1,0 +1,8 @@
+
+= rufus-rtm CHANGELOG.txt
+
+
+== rufus-rtm - 0.1    released 2008/02/14
+
+- initial release
+
