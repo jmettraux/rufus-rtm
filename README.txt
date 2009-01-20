@@ -49,27 +49,29 @@ make then sure that all the 4 variables are set in the environment you use for r
     require 'rubygems'
     require 'rufus/rtm'
 
+    include Rufus::RTM
+
     #
     # listing tasks
 
     tasks = Task.find
-        # finding all the tasks
+      # finding all the tasks
 
     tasks = Task.find :filter => "status:incomplete"
-        # finding all the incomplete tasks
+      # finding all the incomplete tasks
 
     tasks.each do |task|
 
-        puts "task id #{task.task_id}"
-        puts "   #{task.name} (#{task.tags.join(",")})"
-        puts
+      puts "task id #{task.task_id}"
+      puts "   #{task.name} (#{task.tags.join(",")})"
+      puts
     end
 
     #
     # adding a task
 
     task = Task.add! "study this rufus-rtm gem"
-        # gets added to the 'Inbox' by default
+      # gets added to the 'Inbox' by default
 
     puts "task id is #{task.task_id}"
 
