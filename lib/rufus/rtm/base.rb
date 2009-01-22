@@ -50,9 +50,10 @@ module RTM
   #
   # Signs the RTM request (sets the 'api_sig' parameter).
   #
-  def self.sign (params) #:nodoc:
+  def self.sign (params, secret) #:nodoc:
 
-    sig = MD5.md5(SHARED_SECRET + params.sort.flatten.join)
+    sig = MD5.md5(secret + params.sort.flatten.join)
+
     params['api_sig'] = sig.to_s
 
     params
@@ -65,26 +66,32 @@ module RTM
 
     sleep 1
 
-    endpoint = params.delete :endpoint
+    endpoint = params.delete(:endpoint)
     endpoint = AUTH_ENDPOINT if endpoint == :auth
     endpoint = endpoint || REST_ENDPOINT
 
-    ps = params.inject({}) do |r, (k, v)|
-      r[k.to_s] = v
-      r
-    end
+    ps = params.inject({}) { |r, (k, v)| r[k.to_s] = v; r }
 
-    ps['api_key'] = API_KEY
+    ps['api_key'] = params[:api_key] || ENV['RTM_API_KEY']
+
+    raise 'API_KEY missing from environment or parameters, cannot proceed' \
+      unless ps['api_key']
+
+    ps['frob'] = params[:frob] || ENV['RTM_FROB']
+    ps.delete('frob') if ps['frob'] == nil
+
+    ps['auth_token'] = params[:auth_token] || ENV['RTM_AUTH_TOKEN']
+    ps.delete('auth_token') if ps['auth_token'] == nil
+
     ps['format'] = 'json'
 
-    ps['frob'] = FROB if FROB
-    ps['auth_token'] = AUTH_TOKEN if AUTH_TOKEN
+    secret = params[:shared_secret] || ENV['RTM_SHARED_SECRET']
 
-    sign ps
+    sign(ps, secret)
 
-    res = get endpoint, :query => ps
+    res = get(endpoint, :query => ps)
 
-    JSON.parse(res.body)["rsp"]
+    JSON.parse(res.body)['rsp']
   end
 
   #

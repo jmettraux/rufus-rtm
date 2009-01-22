@@ -9,6 +9,8 @@
 
 require 'test/unit'
 
+$: << File.dirname(__FILE__) + '/../lib'
+
 require 'rufus/rtm'
 
 include Rufus::RTM
@@ -57,7 +59,7 @@ class TasksTest < Test::Unit::TestCase
   def test_1
 
     lists = List.find
-    assert_not_nil(lists.find { |e| e.name == "Inbox" })
+    assert_not_nil(lists.find { |e| e.name == 'Inbox' })
 
     work = lists.find { |e| e.name == "Work" }
 
@@ -75,6 +77,21 @@ class TasksTest < Test::Unit::TestCase
     assert_not_nil(tasks.find { |t| t.task_id == t0.task_id })
 
     t0.delete!
+  end
+
+  def test_2
+
+    key = ENV.delete('RTM_API_KEY')
+    secret = ENV.delete('RTM_SHARED_SECRET')
+
+    assert_raise RuntimeError do
+      lists = List.find
+    end
+
+    assert_not_nil List.find(:api_key => key, :shared_secret => secret)
+
+    ENV['RTM_API_KEY'] = key
+    ENV['RTM_SHARED_SECRET'] = secret
   end
 end
 

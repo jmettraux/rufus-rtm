@@ -20,6 +20,8 @@ http://rubyforge.org/frs/?group_id=4812
 * RTM_FROB
 * RTM_AUTH_TOKEN
 
+(Note since version 0.2, it's OK to not set these environment variables and to pass their values for each method with :api_key, :shared_secret, :frob and :auth_token optional parameters (see test_2 of test/tasks_test.rb))
+
 You have to apply for the first two ones at http://www.rememberthemilk.com/services/api/keys.rtm
 
 Once you have the API key and the shared secret, you have to get the frob and the auth token. Fire your 'irb' and

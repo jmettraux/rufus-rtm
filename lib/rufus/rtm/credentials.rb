@@ -45,10 +45,10 @@ module Rufus::RTM
     frob = auth_get_frob
 
     p = {}
-    p['api_key'] = API_KEY
-    p['perms'] = "delete"
+    p['api_key'] = ENV['RTM_API_KEY']
+    p['perms'] = 'delete'
     p['frob'] = frob
-    sign p
+    sign(p, ENV['RTM_SHARED_SECRET'])
 
     [
       frob,
@@ -68,16 +68,7 @@ module Rufus::RTM
   #
   # ensuring the credentials are present...
 
-  API_KEY = ENV['RTM_API_KEY']
-  SHARED_SECRET = ENV['RTM_SHARED_SECRET']
-
-  raise "API_KEY missing from environment, cannot use Rufus::RTM" \
-    unless API_KEY
-
-  FROB = ENV['RTM_FROB']
-  AUTH_TOKEN = ENV['RTM_AUTH_TOKEN']
-
-  unless FROB
+  unless ENV['RTM_FROB']
 
     frob, auth_url = auth_get_frob_and_url
 

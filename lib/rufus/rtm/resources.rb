@@ -70,11 +70,11 @@ module Rufus::RTM
       def self.milk_attr (*att_names) #:nodoc:
 
         att_names.each do |att_name|
-          class_eval """
+          class_eval %{
             def #{att_name}
               @hsh['#{att_name}']
             end
-          """
+          }
         end
       end
 
@@ -128,11 +128,11 @@ module Rufus::RTM
     def self.task_attr (*att_names) #:nodoc:
 
       att_names.each do |att_name|
-        class_eval """
+        class_eval %{
           def #{att_name}
             @hsh['task']['#{att_name}']
           end
-        """
+        }
       end
     end
 
@@ -276,10 +276,10 @@ module Rufus::RTM
       @list_id = h['id']
     end
 
-    def self.find
+    def self.find (params={})
 
-      execute('getList')[resource_name]['list'].collect do |h|
-        self.new h
+      execute('getList', params)[resource_name]['list'].collect do |h|
+        self.new(h)
       end
     end
   end
