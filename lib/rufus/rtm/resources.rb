@@ -1,4 +1,3 @@
-#
 #--
 # Copyright (c) 2008-2009, John Mettraux, jmettraux@gmail.com
 #
@@ -20,17 +19,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-# (MIT license)
+# Made in Japan.
 #++
-#
 
-#
-# John Mettraux
-#
-# Made in Japan
-#
-# 2008/02/07
-#
 
 module Rufus::RTM
 
@@ -63,61 +54,61 @@ module Rufus::RTM
 
     protected
 
-      #
-      # a class method for listing attributes that can be found
-      # in the hash reply coming from RTM...
-      #
-      def self.milk_attr (*att_names) #:nodoc:
+    #
+    # a class method for listing attributes that can be found
+    # in the hash reply coming from RTM...
+    #
+    def self.milk_attr (*att_names) #:nodoc:
 
-        att_names.each do |att_name|
-          class_eval %{
-            def #{att_name}
-              @hsh['#{att_name}']
-            end
-          }
-        end
+      att_names.each do |att_name|
+        class_eval %{
+          def #{att_name}
+            @hsh['#{att_name}']
+          end
+        }
       end
+    end
 
-      #
-      # Calls the milk() method (interacts with the RTM API).
-      #
-      def self.execute (method_name, args={})
+    #
+    # Calls the milk() method (interacts with the RTM API).
+    #
+    def self.execute (method_name, args={})
 
-        args[:method] = "rtm.#{resource_name}.#{method_name}"
+      args[:method] = "rtm.#{resource_name}.#{method_name}"
 
-        Rufus::RTM.milk(args)
-      end
+      Rufus::RTM.milk(args)
+    end
 
-      #
-      # Returns the name of the resource as the API knows it
-      # (for example 'tasks' or 'lists').
-      #
-      def self.resource_name
+    #
+    # Returns the name of the resource as the API knows it
+    # (for example 'tasks' or 'lists').
+    #
+    def self.resource_name
 
-        self.to_s.split('::')[-1].downcase + 's'
-      end
+      self.to_s.split('::')[-1].downcase + 's'
+    end
 
-      #
-      # Simply calls the timeline() class method.
-      #
-      def timeline
+    #
+    # Simply calls the timeline() class method.
+    #
+    def timeline
 
-        MilkResource.timeline
-      end
+      MilkResource.timeline
+    end
 
-      #
-      # Returns the current timeline (fetches one if none has yet
-      # been prepared).
-      #
-      def self.timeline
+    #
+    # Returns the current timeline (fetches one if none has yet
+    # been prepared).
+    #
+    def self.timeline
 
-        @timeline ||= Rufus::RTM.get_timeline
-      end
+      @timeline ||= Rufus::RTM.get_timeline
+    end
 
-      def queue_operation (method_name, args)
+    def queue_operation (method_name, args)
 
-        @operations << [ method_name, args ]
-      end
+      @operations << [ method_name, args ]
+    end
   end
 
   #
@@ -225,41 +216,41 @@ module Rufus::RTM
 
     protected
 
-      def prepare_api_args
-        {
-          :timeline => timeline,
-          :list_id => list_id,
-          :taskseries_id => taskseries_id,
-          :task_id => task_id
-        }
+    def prepare_api_args
+      {
+        :timeline => timeline,
+        :list_id => list_id,
+        :taskseries_id => taskseries_id,
+        :task_id => task_id
+      }
+    end
+
+    def self.parse_tasks (o)
+
+      o = if o.is_a?(Hash)
+
+        r = o[resource_name]
+        o = r if r
+        o['list']
       end
 
-      def self.parse_tasks (o)
+      o = [ o ] unless o.is_a?(Array)
+        # Nota bene : not the same thing as  o = Array(o)
 
-        o = if o.is_a?(Hash)
+      o.inject([]) do |r, h|
 
-          r = o[resource_name]
-          o = r if r
-          o['list']
-        end
-
-        o = [ o ] unless o.is_a?(Array)
-          # Nota bene : not the same thing as  o = Array(o)
-
-        o.inject([]) do |r, h|
-
-          list_id = h['id']
-          s = h['taskseries']
-          r += parse_taskseries(list_id, s) if s
-          r
-        end
+        list_id = h['id']
+        s = h['taskseries']
+        r += parse_taskseries(list_id, s) if s
+        r
       end
+    end
 
-      def self.parse_taskseries (list_id, o)
+    def self.parse_taskseries (list_id, o)
 
-        o = [ o ] unless o.is_a?(Array)
-        o.collect { |s| self.new list_id, s }
-      end
+      o = [ o ] unless o.is_a?(Array)
+      o.collect { |s| self.new(list_id, s) }
+    end
   end
 
   class List < MilkResource

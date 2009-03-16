@@ -1,4 +1,3 @@
-#
 #--
 # Copyright (c) 2008-2009, John Mettraux, jmettraux@gmail.com
 #
@@ -20,17 +19,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-# (MIT license)
+# Made in Japan.
 #++
-#
 
-#
-# John Mettraux
-#
-# Made in Japan
-#
-# 2008/02/07
-#
 
 module Rufus::RTM
 
