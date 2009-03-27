@@ -163,7 +163,7 @@ module Rufus::RTM
       @taskseries_id = h['id']
       @task_id = t['id']
 
-      @tags = TagArray.new self, h['tags']
+      @tags = TagArray.new(self, h['tags'])
     end
 
     #

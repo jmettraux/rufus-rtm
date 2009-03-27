@@ -39,7 +39,7 @@ class TasksTest < Test::Unit::TestCase
 
     t1 = ts.find { |t| t.task_id == t0.task_id }
     assert_equal taskname, t1.name
-    assert_equal "", t1.tags.join(",")
+    assert_equal '', t1.tags.join(',')
 
     ts = Task.find :filter => "status:incomplete"
 
@@ -61,19 +61,19 @@ class TasksTest < Test::Unit::TestCase
     lists = List.find
     assert_not_nil(lists.find { |e| e.name == 'Inbox' })
 
-    work = lists.find { |e| e.name == "Work" }
+    work = lists.find { |e| e.name == 'Work' }
 
     taskname = "more work #{Time.now.to_i}"
 
     t0 = Task.add! taskname, work.list_id
 
-    tasks = Task.find :list_id => work.list_id, :filer => "status:incomplete"
+    tasks = Task.find :list_id => work.list_id, :filer => 'status:incomplete'
 
     assert_not_nil(tasks.find { |t| t.task_id == t0.task_id })
 
     t0.complete!
 
-    tasks = Task.find :list_id => work.list_id, :filer => "status:completed"
+    tasks = Task.find :list_id => work.list_id, :filer => 'status:completed'
     assert_not_nil(tasks.find { |t| t.task_id == t0.task_id })
 
     t0.delete!
