@@ -11,37 +11,9 @@ require 'rake/testtask'
 require 'hanna/rdoctask'
 
 
-RUFUS_RTM_VERSION = '0.1.1'
+gemspec = File.read('rufus-rtm.gemspec')
+eval "gemspec = #{gemspec}"
 
-#
-# GEM SPEC
-
-spec = Gem::Specification.new do |s|
-
-  s.name = 'rufus-rtm'
-  s.version = RUFUS_RTM_VERSION
-  s.authors = [ 'John Mettraux' ]
-  s.email = 'jmettraux@gmail.com'
-  s.homepage = 'http://rufus.rubyforge.org/rufus-rtm'
-  s.platform = Gem::Platform::RUBY
-  s.summary = 'yet another RememberTheMilk wrapper'
-  #s.license = 'MIT'
-
-  s.require_path = 'lib'
-  #s.autorequire = 'rufus-rtm'
-  s.test_file = 'test/test.rb'
-  s.has_rdoc = true
-  s.extra_rdoc_files = [ 'README.txt' ]
-
-  [ 'rufus-verbs' ].each do |d|
-    s.requirements << d
-    s.add_dependency d
-  end
-
-  files = FileList[ '{bin,docs,lib,test}/**/*' ]
-  files.exclude 'html'
-  s.files = files.to_a
-end
 
 #
 # tasks
@@ -60,14 +32,27 @@ Rake::TestTask.new(:test) do |t|
   t.verbose = true
 end
 
+
+#
+# VERSION
+
+task :change_version do
+
+  version = ARGV.pop
+  `sedip "s/VERSION = '.*'/VERSION = '#{version}'/" lib/rufus/rtm/base.rb`
+  `sedip "s/s.version = '.*'/s.version = '#{version}'/" rufus-rtm.gemspec`
+  exit 0 # prevent rake from triggering other tasks
+end
+
+
 #
 # PACKAGING
 
-Rake::GemPackageTask.new(spec) do |pkg|
+Rake::GemPackageTask.new(gemspec) do |pkg|
   #pkg.need_tar = true
 end
 
-Rake::PackageTask.new('rufus-rtm', RUFUS_RTM_VERSION) do |pkg|
+Rake::PackageTask.new('rufus-rtm', gemspec.version) do |pkg|
 
   pkg.need_zip = true
   pkg.package_files = FileList[
@@ -99,7 +84,7 @@ Rake::RDocTask.new do |rd|
     #'CREDITS.txt',
     'lib/**/*.rb')
   #rd.rdoc_files.exclude('lib/tokyotyrant.rb')
-  rd.title = 'rufus-lua rtm'
+  rd.title = 'rufus-rtm rdoc'
   rd.options << '-N' # line numbers
   rd.options << '-S' # inline source
 end

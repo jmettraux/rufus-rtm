@@ -35,6 +35,8 @@ include Rufus::Verbs
 module Rufus
 module RTM
 
+  VERSION = '0.1.2'
+
   AUTH_ENDPOINT = "http://www.rememberthemilk.com/services/auth/"
   REST_ENDPOINT = "http://api.rememberthemilk.com/services/rest/"
 
