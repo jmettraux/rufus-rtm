@@ -2,10 +2,9 @@
 = rufus-rtm CHANGELOG.txt
 
 
-== rufus-rtm - 0.2    not yet released
+== rufus-rtm - 0.1.3    not yet released
 
-- todo  #23665 : can now pass rtm key and secret via method params (Giorgio's
-                 request)
+- can now pass rtm key and secret via method params (Giorgio's request)
 
 
 == rufus-rtm - 0.1    released 2008/02/14
