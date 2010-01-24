@@ -52,7 +52,6 @@ module RTM
   AUTH_ENDPOINT = "http://www.rememberthemilk.com/services/auth/"
   REST_ENDPOINT = "http://api.rememberthemilk.com/services/rest/"
 
-  #
   # Signs the RTM request (sets the 'api_sig' parameter).
   #
   def self.sign (params, secret) #:nodoc:
@@ -62,7 +61,6 @@ module RTM
     params
   end
 
-  #
   # Calls an API method (milk the cow).
   #
   def self.milk (params={}) #:nodoc:
@@ -97,7 +95,6 @@ module RTM
     JSON.parse(res.body)['rsp']
   end
 
-  #
   # Requests a timeline from RTM.
   #
   def self.get_timeline #:nodoc:

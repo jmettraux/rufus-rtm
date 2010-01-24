@@ -38,7 +38,6 @@ module Rufus::RTM
       @operations = []
     end
 
-    #
     # Saves the instance back to RTM.
     #
     def save!
@@ -54,7 +53,6 @@ module Rufus::RTM
 
     protected
 
-    #
     # a class method for listing attributes that can be found
     # in the hash reply coming from RTM...
     #
@@ -69,7 +67,6 @@ module Rufus::RTM
       end
     end
 
-    #
     # Calls the milk() method (interacts with the RTM API).
     #
     def self.execute (method_name, args={})
@@ -79,7 +76,6 @@ module Rufus::RTM
       Rufus::RTM.milk(args)
     end
 
-    #
     # Returns the name of the resource as the API knows it
     # (for example 'tasks' or 'lists').
     #
@@ -88,7 +84,6 @@ module Rufus::RTM
       self.to_s.split('::')[-1].downcase + 's'
     end
 
-    #
     # Simply calls the timeline() class method.
     #
     def timeline
@@ -96,7 +91,6 @@ module Rufus::RTM
       MilkResource.timeline
     end
 
-    #
     # Returns the current timeline (fetches one if none has yet
     # been prepared).
     #
@@ -166,7 +160,6 @@ module Rufus::RTM
       @tags = TagArray.new(self, h['tags'])
     end
 
-    #
     # Deletes the task.
     #
     def delete!
@@ -174,7 +167,6 @@ module Rufus::RTM
       self.class.execute('delete', prepare_api_args)
     end
 
-    #
     # Marks the task as completed.
     #
     def complete!
@@ -182,7 +174,6 @@ module Rufus::RTM
       self.class.execute('complete', prepare_api_args)
     end
 
-    #
     # Sets the tags for the task.
     #
     def tags= (tags)
@@ -199,7 +190,6 @@ module Rufus::RTM
       parse_tasks(execute('getList', params))
     end
 
-    #
     # Adds a new task (and returns it).
     #
     def self.add! (name, list_id=nil)
