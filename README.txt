@@ -4,7 +4,7 @@
 
 == getting it
 
-  sudo gem install -y rufus-rtm
+  gem install rufus-rtm
 
 or at
 
@@ -128,7 +128,7 @@ http://groups.google.com/group/rufus-ruby
 
 == issue tracker
 
-http://rubyforge.org/tracker/?atid=18584&group_id=4812&func=browse
+http://github.com/jmettraux/rufus-rtm/issues
 
 
 == source

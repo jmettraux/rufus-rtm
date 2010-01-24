@@ -25,7 +25,24 @@
 
 require 'rufus/verbs'
 require 'json'
-require 'md5'
+
+begin
+
+  require 'md5'
+
+  def md5 (s)
+    MD5.md5(s).to_s
+  end
+
+rescue LoadError # ruby 1.9.x
+
+  require 'digest/md5'
+
+  def md5 (s)
+    Digest::MD5.hexdigest(s)
+  end
+end
+
 
 include Rufus::Verbs
 
@@ -43,9 +60,7 @@ module RTM
   #
   def self.sign (params, secret) #:nodoc:
 
-    sig = MD5.md5(secret + params.sort.flatten.join)
-
-    params['api_sig'] = sig.to_s
+    params['api_sig'] = md5(secret + params.sort.flatten.join)
 
     params
   end
