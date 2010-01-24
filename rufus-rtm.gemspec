@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
      "LICENSE.txt",
      "README.txt",
      "Rakefile",
+     "TODO.txt",
      "lib/rufus-rtm.rb",
      "lib/rufus/rtm.rb",
      "lib/rufus/rtm/base.rb",

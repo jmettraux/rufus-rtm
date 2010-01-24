@@ -24,7 +24,8 @@
 
 
 require 'rufus/verbs'
-require 'json'
+
+require 'json' # gem install 'json' or 'json_pure'
 
 begin
 

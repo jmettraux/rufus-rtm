@@ -2,7 +2,7 @@
 = rufus-rtm CHANGELOG.txt
 
 
-== rufus-rtm - 0.1.3    not yet released
+== rufus-rtm - 0.1.3    released 2010/01/24
 
 - removed ugly World.include(Rufus::Verbs) (shame on me)
 - ruby 1.9.x friendly
