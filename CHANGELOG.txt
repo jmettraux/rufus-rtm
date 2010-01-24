@@ -4,6 +4,7 @@
 
 == rufus-rtm - 0.1.3    not yet released
 
+- removed ugly World.include(Rufus::Verbs) (shame on me)
 - ruby 1.9.x friendly
 - removed evil "require 'rubygems'" from rufus/rtm/base.rb
 - can now pass rtm key and secret via method params (Giorgio's request)

@@ -44,9 +44,6 @@ rescue LoadError # ruby 1.9.x
 end
 
 
-include Rufus::Verbs
-
-
 module Rufus
 module RTM
 
@@ -95,7 +92,7 @@ module RTM
 
     sign(ps, secret)
 
-    res = get(endpoint, :query => ps)
+    res = Rufus::Verbs.get(endpoint, :query => ps)
 
     JSON.parse(res.body)['rsp']
   end
