@@ -7,6 +7,8 @@
 # Tue Feb  5 18:16:55 JST 2008
 #
 
+require 'rubygems'
+
 require 'test/unit'
 
 $: << File.dirname(__FILE__) + '/../lib'

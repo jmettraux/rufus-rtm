@@ -23,9 +23,7 @@
 #++
 
 
-require 'rubygems'
 require 'rufus/verbs'
-
 require 'json'
 require 'md5'
 

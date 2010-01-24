@@ -1,92 +1,74 @@
 
+
+require 'lib/rufus/rtm/base.rb'
+
 require 'rubygems'
-
 require 'rake'
+
+
+#
+# CLEAN
+
 require 'rake/clean'
-require 'rake/packagetask'
-require 'rake/gempackagetask'
-require 'rake/testtask'
-
-#require 'rake/rdoctask'
-#require 'hanna/rdoctask'
-
-
-gemspec = File.read('rufus-rtm.gemspec')
-eval "gemspec = #{gemspec}"
+CLEAN.include('pkg', 'tmp', 'html')
+task :default => [ :clean ]
 
 
 #
-# tasks
+# GEM
 
-CLEAN.include('pkg', 'html')
+require 'jeweler'
 
-task :default => [ :clean, :repackage ]
+Jeweler::Tasks.new do |gem|
 
+  gem.version = Rufus::RTM::VERSION
+  gem.name = 'rufus-rtm'
+  gem.summary = 'yet another RememberTheMilk wrapper'
 
-#
-# TESTING
+  gem.description = %{
+    yet another RememberTheMilk wrapper
+  }
+  gem.email = 'jmettraux@gmail.com'
+  gem.homepage = 'http://github.com/jmettraux/rufus-rtm/'
+  gem.authors = [ 'John Mettraux' ]
+  gem.rubyforge_project = 'rufus'
 
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'test'
-  t.test_files = FileList['test/test.rb']
-  t.verbose = true
+  gem.test_file = 'test/test.rb'
+
+  gem.add_dependency 'rufus-verbs', '>= 1.0.0'
+  gem.add_development_dependency 'yard', '>= 0'
+
+  # gemspec spec : http://www.rubygems.org/read/chapter/20
 end
+Jeweler::GemcutterTasks.new
 
 
 #
-# VERSION
+# DOC
 
-task :change_version do
+begin
 
-  version = ARGV.pop
-  `sedip "s/VERSION = '.*'/VERSION = '#{version}'/" lib/rufus/rtm/base.rb`
-  `sedip "s/s.version = '.*'/s.version = '#{version}'/" rufus-rtm.gemspec`
-  exit 0 # prevent rake from triggering other tasks
-end
+  require 'yard'
 
+  YARD::Rake::YardocTask.new do |doc|
+    doc.options = [
+      '-o', 'html/rufus-rtm', '--title',
+      "rufus-rtm #{Rufus::RTM::VERSION}"
+    ]
+  end
 
-#
-# PACKAGING
+rescue LoadError
 
-Rake::GemPackageTask.new(gemspec) do |pkg|
-  #pkg.need_tar = true
-end
-
-Rake::PackageTask.new('rufus-rtm', gemspec.version) do |pkg|
-
-  pkg.need_zip = true
-  pkg.package_files = FileList[
-    'Rakefile',
-    '*.txt',
-    'lib/**/*',
-    'test/**/*'
-  ].to_a
-  #pkg.package_files.delete("MISC.txt")
-  class << pkg
-    def package_name
-      "#{@name}-#{@version}-src"
-    end
+  task :yard do
+    abort "YARD is not available : sudo gem install yard"
   end
 end
 
 
 #
-# DOCUMENTATION
+# TO THE WEB
 
-task :rdoc do
-  sh %{
-    rm -fR rdoc
-    yardoc 'lib/**/*.rb' \
-      -o html/rufus-rtm \
-      --title 'rufus-rtm'
-  }
-end
-
-
-#
-# WEBSITE
-
-task :upload_website => [ :clean, :rdoc ] do
+task :upload_website => [ :clean, :yard ] do
 
   account = 'jmettraux@rubyforge.org'
   webdir = '/var/www/gforge-projects/rufus'
