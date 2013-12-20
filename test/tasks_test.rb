@@ -67,7 +67,7 @@ class TasksTest < Test::Unit::TestCase
 
     taskname = "more work #{Time.now.to_i}"
 
-    t0 = Task.add! taskname, work.list_id
+    t0 = Task.add! taskname, :list_id => work.list_id
 
     tasks = Task.find :list_id => work.list_id, :filer => 'status:incomplete'
 
@@ -95,5 +95,28 @@ class TasksTest < Test::Unit::TestCase
     ENV['RTM_API_KEY'] = key
     ENV['RTM_SHARED_SECRET'] = secret
   end
-end
 
+  def test_smart_add
+    taskname = "more work #{Time.now.to_i}"
+    smart_add_string = "#{taskname} tomorrow"
+    task = Task.add! smart_add_string
+
+    tasks = Task.find
+
+    task_created = tasks.find { |t| t.task_id == task.task_id }
+    assert !task_created.due.empty?
+    assert_equal taskname, task_created.name  # 'tomorrow' is stripped as due date
+  end
+
+  def test_turn_smart_add_off
+    taskname = "more work #{Time.now.to_i} tomorrow"
+    task = Task.add! taskname, :parse => false
+
+    tasks = Task.find
+
+    task_created = tasks.find { |t| t.task_id == task.task_id }
+    assert task_created.due.empty?
+    assert_equal taskname, task_created.name
+  end
+
+end

@@ -89,7 +89,7 @@ make then sure that all the 4 variables are set in the environment you use for r
   #
   # adding a task to a list
 
-  task = Task.add! "work, more work", w.list_id
+  task = Task.add! "work, more work", :list_id => w.list_id
 
   #
   # completing a task

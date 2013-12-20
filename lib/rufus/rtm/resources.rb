@@ -192,12 +192,14 @@ module Rufus::RTM
 
     # Adds a new task (and returns it).
     #
-    def self.add! (name, list_id=nil)
+    def self.add! (name, opts = {})
+      opts = { list_id: nil, parse: true }.merge(opts)
 
       args = {}
       args[:name] = name
-      args[:list_id] = list_id if list_id
+      args[:list_id] = opts[:list_id] if opts[:list_id]
       args[:timeline] = Rufus::RTM.get_timeline
+      args[:parse] = 1 unless !opts[:parse]
 
       h = execute('add', args)
 
@@ -324,4 +326,3 @@ module Rufus::RTM
   end
 
 end
-
