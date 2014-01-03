@@ -7,5 +7,5 @@ The previous readme is still available at [README.bak.txt](README.bak.txt).
 
 ## License
 
-MIT (see [LICENSE.txt](LICENSE.txt).
+MIT (see [LICENSE.txt](LICENSE.txt)).
 
